@@ -32,11 +32,28 @@ public abstract class ZLXMLProcessor {
 			return Collections.emptyMap();
 		}
 	}
-
-	public static void read(ZLXMLReader xmlReader, InputStream stream, int bufferSize) throws IOException {
+	
+	public static void read(ZLXMLReader xmlReader, Object inputSource, int bufferSize) throws IOException{
 		ZLXMLParser parser = null;
 		try {
-			parser = new ZLXMLParser(xmlReader, stream, bufferSize);
+			if(inputSource instanceof InputStream ){
+				parser = new ZLXMLParser(xmlReader, (InputStream)inputSource, bufferSize);
+			}
+			else if(inputSource instanceof Reader){
+				parser = new ZLXMLParser(xmlReader, (Reader)inputSource, bufferSize);
+			}
+			else if(inputSource instanceof ZLFile){
+				InputStream stream = ((ZLFile)inputSource).getInputStream();
+				try{
+					read(xmlReader, stream, bufferSize);
+				} finally {
+					try {
+						stream.close();
+					} catch (IOException e) {
+					}
+				}
+			}
+			
 			xmlReader.startDocumentHandler();
 			parser.doIt();
 			xmlReader.endDocumentHandler();
@@ -46,34 +63,5 @@ public abstract class ZLXMLProcessor {
 			}
 		}
 	}
-
-	public static void read(ZLXMLReader xmlReader, Reader reader, int bufferSize) throws IOException {
-		ZLXMLParser parser = null;
-		try {
-			parser = new ZLXMLParser(xmlReader, reader, bufferSize);
-			xmlReader.startDocumentHandler();
-			parser.doIt();
-			xmlReader.endDocumentHandler();
-		} finally {
-			if (parser != null) {
-				parser.finish();
-			}
-		}
-	}
-
-	public static void read(ZLXMLReader xmlReader, ZLFile file) throws IOException {
-		read(xmlReader, file, 65536);
-	}
-
-	public static void read(ZLXMLReader xmlReader, ZLFile file, int bufferSize) throws IOException {
-		InputStream stream = file.getInputStream();
-		try {
-			read(xmlReader, stream, bufferSize);
-		} finally {
-			try {
-				stream.close();
-			} catch (IOException e) {
-			}
-		}
-	}
+	
 }
