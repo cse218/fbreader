@@ -20,7 +20,6 @@
 package org.geometerplus.fbreader.fbreader;
 
 import java.util.*;
-
 import org.geometerplus.zlibrary.core.util.ZLColor;
 import org.geometerplus.zlibrary.core.options.*;
 
@@ -75,49 +74,35 @@ public class ColorProfile {
 		FooterFillOption.setValue(base.FooterFillOption.getValue());
 	}
 
-	private static ZLColorOption createOption(String profileName, String optionName, int r, int g, int b) {
+	public static ZLColorOption createOption(String profileName, String optionName, int r, int g, int b) {
 		return new ZLColorOption("Colors", profileName + ':' + optionName, new ZLColor(r, g, b));
 	}
 
 	private ColorProfile(String name) {
+		ColorProfileConfig cc = null;
 		if (NIGHT.equals(name)) {
-			WallpaperOption =
-				new ZLStringOption("Colors", name + ":Wallpaper", "");
-			BackgroundOption =
-				createOption(name, "Background", 0, 0, 0);
-			SelectionBackgroundOption =
-				createOption(name, "SelectionBackground", 82, 131, 194);
-			SelectionForegroundOption =
-				createOption(name, "SelectionForeground", 255, 255, 220);
-			HighlightingOption =
-				createOption(name, "Highlighting", 96, 96, 128);
-			RegularTextOption =
-				createOption(name, "Text", 192, 192, 192);
-			HyperlinkTextOption =
-				createOption(name, "Hyperlink", 60, 142, 224);
-			VisitedHyperlinkTextOption =
-				createOption(name, "VisitedHyperlink", 200, 139, 255);
-			FooterFillOption =
-				createOption(name, "FooterFillOption", 85, 85, 85);
+			cc = new ColorProfileDark();
 		} else {
-			WallpaperOption =
-				new ZLStringOption("Colors", name + ":Wallpaper", "wallpapers/sepia.jpg");
-			BackgroundOption =
-				createOption(name, "Background", 255, 255, 255);
-			SelectionBackgroundOption =
-				createOption(name, "SelectionBackground", 82, 131, 194);
-			SelectionForegroundOption =
-				createOption(name, "SelectionForeground", 255, 255, 220);
-			HighlightingOption =
-				createOption(name, "Highlighting", 255, 192, 128);
-			RegularTextOption =
-				createOption(name, "Text", 0, 0, 0);
-			HyperlinkTextOption =
-				createOption(name, "Hyperlink", 60, 139, 255);
-			VisitedHyperlinkTextOption =
-				createOption(name, "VisitedHyperlink", 200, 139, 255);
-			FooterFillOption =
-				createOption(name, "FooterFillOption", 170, 170, 170);
+			cc = new ColorProfileWhite();
 		}
+		cc.setConfig();
+		WallpaperOption =
+			cc.getWallpaperOption();
+		BackgroundOption =
+			cc.getBackgroundOption();
+		SelectionBackgroundOption =
+			cc.getSelectionBackgroundOption();
+		SelectionForegroundOption =
+			cc.getSelectionForegroundOption();
+		HighlightingOption =
+			cc.getHighlightingOption();
+		RegularTextOption =
+			cc.getRegularTextOption();
+		HyperlinkTextOption =
+			cc.getHyperlinkTextOption();
+		VisitedHyperlinkTextOption =
+			cc.getVisitedHyperlinkTextOption();
+		FooterFillOption =
+			cc.getFooterFillOption();
 	}
 }
