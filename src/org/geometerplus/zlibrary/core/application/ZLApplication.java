@@ -230,68 +230,10 @@ public abstract class ZLApplication {
 		return (myWindow != null) ? myWindow.getBatteryLevel() : 0;
 	}
 
-	private volatile Timer myTimer;
-	private final HashMap<Runnable,Long> myTimerTaskPeriods = new HashMap<Runnable,Long>();
-	private final HashMap<Runnable,TimerTask> myTimerTasks = new HashMap<Runnable,TimerTask>();
-	private static class MyTimerTask extends TimerTask {
-		private final Runnable myRunnable;
+	public MyTimer timer = new MyTimer();
+	
 
-		MyTimerTask(Runnable runnable) {
-			myRunnable = runnable;
-		}
-
-		@Override
-		public void run() {
-			myRunnable.run();
-		}
-	}
-
-	private void addTimerTaskInternal(Runnable runnable, long periodMilliseconds) {
-		final TimerTask task = new MyTimerTask(runnable);
-		myTimer.schedule(task, periodMilliseconds / 2, periodMilliseconds);
-		myTimerTasks.put(runnable, task);
-	}
-
-	private final Object myTimerLock = new Object();
-	public final void startTimer() {
-		synchronized (myTimerLock) {
-			if (myTimer == null) {
-				myTimer = new Timer();
-				for (Map.Entry<Runnable,Long> entry : myTimerTaskPeriods.entrySet()) {
-					addTimerTaskInternal(entry.getKey(), entry.getValue());
-				}
-			}
-		}
-	}
-
-	public final void stopTimer() {
-		synchronized (myTimerLock) {
-			if (myTimer != null) {
-				myTimer.cancel();
-				myTimer = null;
-				myTimerTasks.clear();
-			}
-		}
-	}
-
-	public final void addTimerTask(Runnable runnable, long periodMilliseconds) {
-		synchronized (myTimerLock) {
-			removeTimerTask(runnable);
-			myTimerTaskPeriods.put(runnable, periodMilliseconds);
-			if (myTimer != null) {
-				addTimerTaskInternal(runnable, periodMilliseconds);
-			}
-		}
-	}
-
-	public final void removeTimerTask(Runnable runnable) {
-		synchronized (myTimerLock) {
-			TimerTask task = myTimerTasks.get(runnable);
-			if (task != null) {
-				task.cancel();
-				myTimerTasks.remove(runnable);
-			}
-			myTimerTaskPeriods.remove(runnable);
-		}
-	}
 }
+
+
+

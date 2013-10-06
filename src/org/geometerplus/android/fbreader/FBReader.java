@@ -454,7 +454,7 @@ public final class FBReader extends Activity {
 		} catch (IllegalArgumentException e) {
 			// do nothing, this exception means myBatteryInfoReceiver was not registered
 		}
-		myFBReaderApp.stopTimer();
+		myFBReaderApp.timer.stopTimer();
 		if (getZLibrary().DisableButtonLightsOption.getValue()) {
 			setButtonLight(true);
 		}
@@ -660,7 +660,7 @@ public final class FBReader extends Activity {
 			}
 		}
 		if (myStartTimer) {
-			myFBReaderApp.startTimer();
+			myFBReaderApp.timer.startTimer();
 			myStartTimer = false;
 		}
 	}

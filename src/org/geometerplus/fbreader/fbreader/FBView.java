@@ -599,11 +599,11 @@ public final class FBView extends ZLTextView {
 		if (myReader.ScrollbarTypeOption.getValue() == SCROLLBAR_SHOW_AS_FOOTER) {
 			if (myFooter == null) {
 				myFooter = new Footer();
-				myReader.addTimerTask(myFooter.UpdateTask, 15000);
+				myReader.timer.addTimerTask(myFooter.UpdateTask, 15000);
 			}
 		} else {
 			if (myFooter != null) {
-				myReader.removeTimerTask(myFooter.UpdateTask);
+				myReader.timer.removeTimerTask(myFooter.UpdateTask);
 				myFooter = null;
 			}
 		}

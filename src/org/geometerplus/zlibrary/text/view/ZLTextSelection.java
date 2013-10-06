@@ -285,7 +285,7 @@ class ZLTextSelection extends ZLTextHighlighting {
 			myPage = page;
 			myScrollForward = forward;
 			setXY(x, y);
-			myView.Application.addTimerTask(this, 400);
+			myView.Application.timer.addTimerTask(this, 400);
 		}
 
 		boolean scrollsForward() {
@@ -306,7 +306,7 @@ class ZLTextSelection extends ZLTextHighlighting {
 		}
 
 		private void stop() {
-			myView.Application.removeTimerTask(this);
+			myView.Application.timer.removeTimerTask(this);
 		}
 	}
 }
