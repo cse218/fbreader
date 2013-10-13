@@ -20,8 +20,5 @@
 package org.geometerplus.zlibrary.text.view;
 
 public class ZLTextElement {
-	final static ZLTextElement HSpace = new ZLTextElement();
-	final static ZLTextElement AfterParagraph = new ZLTextElement();
-	final static ZLTextElement Indent = new ZLTextElement();
-	final static ZLTextElement StyleClose = new ZLTextElement();
+
 }

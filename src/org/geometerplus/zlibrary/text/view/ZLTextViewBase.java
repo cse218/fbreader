@@ -125,13 +125,13 @@ abstract class ZLTextViewBase extends ZLView {
 
 	boolean isStyleChangeElement(ZLTextElement element) {
 		return
-			element == ZLTextElement.StyleClose ||
+			element == ZLTextUniversalElement.StyleClose ||
 			element instanceof ZLTextStyleElement ||
 			element instanceof ZLTextControlElement;
 	}
 
 	void applyStyleChangeElement(ZLTextElement element) {
-		if (element == ZLTextElement.StyleClose) {
+		if (element == ZLTextUniversalElement.StyleClose) {
 			applyStyleClose();
 		} else if (element instanceof ZLTextStyleElement) {
 			applyStyle((ZLTextStyleElement)element);
@@ -193,7 +193,7 @@ abstract class ZLTextViewBase extends ZLView {
 				getScalingType(imageElement)
 			);
 			return size != null ? size.Width : 0;
-		} else if (element == ZLTextElement.Indent) {
+		} else if (element == ZLTextUniversalElement.Indent) {
 			return myTextStyle.getFirstLineIndentDelta();
 		} else if (element instanceof ZLTextFixedHSpaceElement) {
 			return getContext().getSpaceWidth() * ((ZLTextFixedHSpaceElement)element).Length;

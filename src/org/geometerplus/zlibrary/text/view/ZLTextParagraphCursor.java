@@ -105,7 +105,7 @@ public final class ZLTextParagraphCursor {
 						elements.add(new ZLTextStyleElement(it.getStyleEntry()));
 						break;
 					case ZLTextParagraph.Entry.STYLE_CLOSE:
-						elements.add(ZLTextElement.StyleClose);
+						elements.add(ZLTextUniversalElement.StyleClose);
 						break;
 					case ZLTextParagraph.Entry.FIXED_HSPACE:
 						elements.add(ZLTextFixedHSpaceElement.getElement(it.getFixedHSpaceLength()));
@@ -126,7 +126,7 @@ public final class ZLTextParagraphCursor {
 				final byte[] breaks = ourBreaks;
 				myLineBreaker.setLineBreaks(data, offset, length, breaks);
 
-				final ZLTextElement hSpace = ZLTextElement.HSpace;
+				final ZLTextElement hSpace = ZLTextUniversalElement.HSpace;
 				final ArrayList<ZLTextElement> elements = myElements;
 				char ch = 0;
 				char previousChar = 0;

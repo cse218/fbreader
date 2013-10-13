@@ -638,7 +638,7 @@ public abstract class ZLTextView extends ZLTextViewBase {
 
 		final float charWidth = computeCharWidth();
 
-		final int indentWidth = getElementWidth(ZLTextElement.Indent, 0);
+		final int indentWidth = getElementWidth(ZLTextUniversalElement.Indent, 0);
 		final float effectiveWidth = textWidth - (indentWidth + 0.5f * textWidth) / charsPerParagraph;
 		float charsPerLine = Math.min(effectiveWidth / charWidth,
 				charsPerParagraph * 1.2f);
@@ -899,7 +899,7 @@ public abstract class ZLTextView extends ZLTextViewBase {
 						getTextAreaSize(),
 						getScalingType(imageElement)
 					);
-				} else if (element == ZLTextElement.HSpace) {
+				} else if (element == ZLTextUniversalElement.HSpace) {
 					final int cw = context.getSpaceWidth();
 					/*
 					context.setFillColor(getHighlightingColor());
@@ -1053,7 +1053,7 @@ public abstract class ZLTextView extends ZLTextViewBase {
 			newWidth += getElementWidth(element, currentCharIndex);
 			newHeight = Math.max(newHeight, getElementHeight(element));
 			newDescent = Math.max(newDescent, getElementDescent(element));
-			if (element == ZLTextElement.HSpace) {
+			if (element == ZLTextUniversalElement.HSpace) {
 				if (wordOccurred) {
 					wordOccurred = false;
 					internalSpaceCounter++;
@@ -1204,7 +1204,7 @@ public abstract class ZLTextView extends ZLTextViewBase {
 				x += (maxWidth - getTextStyle().getRightIndent() - info.Width) / 2;
 				break;
 			case ZLTextAlignmentType.ALIGN_JUSTIFY:
-				if (!endOfParagraph && (paragraphCursor.getElement(info.EndElementIndex) != ZLTextElement.AfterParagraph)) {
+				if (!endOfParagraph && (paragraphCursor.getElement(info.EndElementIndex) != ZLTextUniversalElement.AfterParagraph)) {
 					fullCorrection = maxWidth - getTextStyle().getRightIndent() - info.Width;
 				}
 				break;
@@ -1221,7 +1221,7 @@ public abstract class ZLTextView extends ZLTextViewBase {
 		for (int wordIndex = info.RealStartElementIndex; wordIndex != endElementIndex; ++wordIndex, charIndex = 0) {
 			final ZLTextElement element = paragraph.getElement(wordIndex);
 			final int width = getElementWidth(element, charIndex);
-			if (element == ZLTextElement.HSpace) {
+			if (element == ZLTextUniversalElement.HSpace) {
 				if (wordOccurred && (spaceCounter > 0)) {
 					final int correction = fullCorrection / spaceCounter;
 					final int spaceLength = context.getSpaceWidth() + correction;
