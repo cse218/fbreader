@@ -21,6 +21,9 @@ package org.geometerplus.zlibrary.text.view;
 
 import java.util.List;
 
+import org.geometerplus.fbreader.fbreader.FBReaderApp;
+import org.geometerplus.zlibrary.text.view.ZLTextRegion.Soul;
+
 public class ZLTextHyperlinkRegionSoul extends ZLTextRegion.Soul {
 	public final ZLTextHyperlink Hyperlink;
 
@@ -42,4 +45,12 @@ public class ZLTextHyperlinkRegionSoul extends ZLTextRegion.Soul {
 		);
 		Hyperlink = hyperlink;
 	}
+
+	@Override
+	public boolean someProcess(FBReaderApp myreader) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
 }

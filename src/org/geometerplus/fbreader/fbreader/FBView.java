@@ -304,17 +304,8 @@ public final class FBView extends ZLTextView {
 		if (region != null) {
 			final ZLTextRegion.Soul soul = region.getSoul();
 
-			boolean doRunAction = false;
-			if (soul instanceof ZLTextWordRegionSoul) {
-				doRunAction =
-					myReader.WordTappingActionOption.getValue() ==
-					FBReaderApp.WordTappingAction.openDictionary;
-			} else if (soul instanceof ZLTextImageRegionSoul) {
-				doRunAction =
-					myReader.ImageTappingActionOption.getValue() ==
-					FBReaderApp.ImageTappingAction.openImageView;
-			}
-
+			boolean doRunAction = soul.someProcess(myReader);
+			
 			if (doRunAction) {
 				myReader.runAction(ActionCode.PROCESS_HYPERLINK);
 				return true;

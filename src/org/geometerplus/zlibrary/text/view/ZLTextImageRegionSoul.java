@@ -19,6 +19,9 @@
 
 package org.geometerplus.zlibrary.text.view;
 
+import org.geometerplus.fbreader.fbreader.FBReaderApp;
+import org.geometerplus.zlibrary.text.view.ZLTextRegion.Soul;
+
 public class ZLTextImageRegionSoul extends ZLTextRegion.Soul {
 	public final ZLTextImageElement ImageElement;
 
@@ -26,4 +29,13 @@ public class ZLTextImageRegionSoul extends ZLTextRegion.Soul {
 		super(position.getParagraphIndex(), position.getElementIndex(), position.getElementIndex());
 		ImageElement = imageElement;
 	}
+
+	@Override
+	public boolean someProcess(FBReaderApp myreader) {
+		return myreader.ImageTappingActionOption.getValue() ==
+				FBReaderApp.ImageTappingAction.openImageView;
+	}
+
+
+	
 }

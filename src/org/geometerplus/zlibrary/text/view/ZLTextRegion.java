@@ -21,6 +21,7 @@ package org.geometerplus.zlibrary.text.view;
 
 import java.util.*;
 
+import org.geometerplus.fbreader.fbreader.FBReaderApp;
 import org.geometerplus.zlibrary.core.view.ZLPaintContext;
 
 public final class ZLTextRegion {
@@ -39,6 +40,8 @@ public final class ZLTextRegion {
 			return compareTo(area) == 0;
 		}
 
+		public abstract boolean someProcess(FBReaderApp myreader);
+		
 		@Override
 		public final boolean equals(Object other) {
 			if (other == this) {

@@ -19,6 +19,9 @@
 
 package org.geometerplus.zlibrary.text.view;
 
+import org.geometerplus.fbreader.fbreader.FBReaderApp;
+import org.geometerplus.zlibrary.text.view.ZLTextRegion.Soul;
+
 public class ZLTextWordRegionSoul extends ZLTextRegion.Soul {
 	public final ZLTextWord Word;
 
@@ -26,4 +29,13 @@ public class ZLTextWordRegionSoul extends ZLTextRegion.Soul {
 		super(position.getParagraphIndex(), position.getElementIndex(), position.getElementIndex());
 		Word = word;
 	}
+
+	@Override
+	public boolean someProcess(FBReaderApp myreader) {
+		return myreader.WordTappingActionOption.getValue() ==
+				FBReaderApp.WordTappingAction.openDictionary;
+	}
+
+
+	
 }
