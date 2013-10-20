@@ -668,38 +668,7 @@ class XMLSerializer extends AbstractSerializer {
 			} else {
 				if ("filter".equals(localName)) {
 					final String type = attributes.getValue("type");
-					if ("empty".equals(type)) {
-						myFilter = new Filter.Empty();
-					} else if ("author".equals(type)) {
-						myFilter = new Filter.ByAuthor(new Author(
-							attributes.getValue("displayName"),
-							attributes.getValue("sorkKey")
-						));
-					} else if ("tag".equals(type)) {
-						final LinkedList<String> names = new LinkedList<String>();
-						int num = 0;
-						String n;
-						while ((n = attributes.getValue("name" + num++)) != null) {
-							names.add(n);
-						}
-						myFilter = new Filter.ByTag(Tag.getTag(names.toArray(new String[names.size()])));
-					} else if ("label".equals(type)) {
-						myFilter = new Filter.ByLabel(attributes.getValue("name"));
-					} else if ("series".equals(type)) {
-						myFilter = new Filter.BySeries(new Series(
-							attributes.getValue("title")
-						));
-					} else if ("pattern".equals(type)) {
-						myFilter = new Filter.ByPattern(attributes.getValue("pattern"));
-					} else if ("title-prefix".equals(type)) {
-						myFilter = new Filter.ByTitlePrefix(attributes.getValue("prefix"));
-					} else if ("has-bookmark".equals(type)) {
-						myFilter = new Filter.HasBookmark();
-					} else {
-						// we create empty filter for all other types
-						// to keep a door to add new filters in a future
-						myFilter = new Filter.Empty();
-					}
+					myFilter = new FilterFactory().createFilter(type, attributes);
 					if (!myFilterStack.isEmpty() && myFilterStack.getLast() == null) {
 						myFilterStack.set(myFilterStack.size() - 1, myFilter);
 					}

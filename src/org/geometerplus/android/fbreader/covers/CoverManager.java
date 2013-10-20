@@ -97,7 +97,12 @@ public class CoverManager {
 			holder = new CoverHolder(this, coverView, tree.getUniqueKey());
 			coverView.setTag(holder);
 		} else {
-			holder.setKey(tree.getUniqueKey());
+			FBTree.Key key = tree.getUniqueKey();
+			if(!holder.checkKeyEqual(key)){
+				if (!holder.checkCoverBitmapTaskEmpty()) holder.resetBitmapResource();
+				holder.setKey(key);
+			}
+			
 		}
 		return holder;
 	}

@@ -45,18 +45,37 @@ class CoverHolder {
 
 		myManager.Cache.HoldersCounter++;
 	}
-
+	
+	@Requires({
+		"!(Key.equals(key))"
+	})
 	synchronized void setKey(FBTree.Key key) {
-		if (!Key.equals(key)) {
-			if (coverBitmapTask != null) {
-				coverBitmapTask.cancel(true);
-				coverBitmapTask = null;
-			}
-			coverBitmapRunnable = null;
-		}
 		Key = key;
 	}
-
+	
+	boolean checkKeyEqual(FBTree.Key key){
+		if (!Key.equals(key)){
+			return false;
+		}
+		return true;
+	}
+	
+	@Requires({
+		"coverBitmapTask == null"
+	})
+	void resetBitmapResource(){		
+		coverBitmapTask.cancel(true);
+		coverBitmapTask = null;
+		coverBitmapRunnable = null;
+	}
+	
+	Boolean checkCoverBitmapTaskEmpty(){
+		if (coverBitmapTask != null) 
+			return false;
+		return true;
+	}
+	
+	
 	class CoverSyncRunnable implements Runnable {
 		private final ZLLoadableImage myImage;
 		private final FBTree.Key myKey;
