@@ -31,6 +31,7 @@ import org.geometerplus.zlibrary.text.view.ZLTextPosition;
 import org.geometerplus.fbreader.bookmodel.BookReadingException;
 import org.geometerplus.fbreader.formats.*;
 
+@ContractReference(TimeOfDayContract.class)
 public class BookCollection extends AbstractBookCollection {
 	private final BooksDatabase myDatabase;
 	public final List<String> BookDirectories;
@@ -450,27 +451,40 @@ public class BookCollection extends AbstractBookCollection {
 		}
 	}
 
-	private void build() {
-		// Step 0: get database books marked as "existing"
-		final FileInfoSet fileInfos = new FileInfoSet(myDatabase);
-		final Map<Long,Book> savedBooksByFileId = myDatabase.loadBooks(fileInfos, true);
-		final Map<Long,Book> savedBooksByBookId = new HashMap<Long,Book>();
+	private void setSavedBooksByFieldId(Map<Long,Book> savedBooksByFileId){
+		if (preCondition()) {
+	         assert savedBooksByFileId != null : "savedBooksByFileId not null";
+		}
+		
+		final Map<Long,Book> savedBooksByBookId = new HashMap<Long,Book>();		
 		for (Book b : savedBooksByFileId.values()) {
 			savedBooksByBookId.put(b.getId(), b);
 		}
-
-		// Step 1: check if files corresponding to "existing" books really exists;
-		//         add books to library if yes (and reload book info if needed);
-		//         remove from recent/favorites list if no;
-		//         collect newly "orphaned" books
-		final Set<Book> orphanedBooks = new HashSet<Book>();
+	}
+	
+	private Set<ZLPhysicalFile> getPhysicalFiles(Map<Long,Book> savedBooksByFileId){
+		if (preCondition()) {
+	         assert savedBooksByFileId != null : "savedBooksByFileId not null";
+		}
+		
 		final Set<ZLPhysicalFile> physicalFiles = new HashSet<ZLPhysicalFile>();
-		int count = 0;
 		for (Book book : savedBooksByFileId.values()) {
 			final ZLPhysicalFile file = book.File.getPhysicalFile();
 			if (file != null) {
 				physicalFiles.add(file);
 			}
+		}		
+		return physicalFiles;
+	}
+	
+	private void setOphanedBooks(Map<Long,Book> savedBooksByFileId, FileInfoSet fileInfos){
+		if (preCondition()) {
+	         assert savedBooksByFileId != null : "savedBooksByFileId not null";
+	         assert fileInfos != null : "fileInfos not null";
+		}
+		final Set<Book> orphanedBooks = new HashSet<Book>();
+		for (Book book : savedBooksByFileId.values()) {
+			final ZLPhysicalFile file = book.File.getPhysicalFile();
 			if (file != book.File && file != null && file.getPath().endsWith(".epub")) {
 				continue;
 			}
@@ -482,7 +496,8 @@ public class BookCollection extends AbstractBookCollection {
 				if (!fileInfos.check(file, true)) {
 					try {
 						book.readMetaInfo();
-						saveBook(book, false);
+						
+						/* command */saveBook(book, false);
 					} catch (BookReadingException e) {
 						doAdd = false;
 					}
@@ -490,19 +505,28 @@ public class BookCollection extends AbstractBookCollection {
 				}
 				if (doAdd) {
 					// loaded from db
-					addBook(book, false);
+					
+					/* command */addBook(book, false);
 				}
 			} else {
 				orphanedBooks.add(book);
 			}
 		}
-		myDatabase.setExistingFlag(orphanedBooks, false);
-
-		// Step 2: collect books from physical files; add new, update already added,
-		//         unmark orphaned as existing again, collect newly added
-		final Map<Long,Book> orphanedBooksByFileId = myDatabase.loadBooks(fileInfos, false);
+		
+		/* command */myDatabase.setExistingFlag(orphanedBooks, false);
+	}
+	
+	// TODO:this is a combination of query and command, but I don't have enough time to refactor it
+	private Set<Book> getNewBooks(Map<Long,Book> savedBooksByFileId, FileInfoSet fileInfos, Set<ZLPhysicalFile> physicalFiles){
+		
+		if (preCondition()) {
+	         assert savedBooksByFileId != null : "savedBooksByFileId not null";
+	         assert fileInfos != null : "fileInfos not null";
+	         assert physicalFiles != null : "physicalFiles not null";
+		}
+		
 		final Set<Book> newBooks = new HashSet<Book>();
-
+		final Map<Long,Book> orphanedBooksByFileId = myDatabase.loadBooks(fileInfos, false);
 		final List<ZLPhysicalFile> physicalFilesList = collectPhysicalFiles(BookDirectories);
 		for (ZLPhysicalFile file : physicalFilesList) {
 			if (physicalFiles.contains(file)) {
@@ -516,8 +540,16 @@ public class BookCollection extends AbstractBookCollection {
 			);
 			file.setCached(false);
 		}
+		return newBooks;
+	}
+	
+	private void addHelpFiles(Map<Long,Book> savedBooksByFileId, FileInfoSet fileInfos){
 
-		// Step 3: add help file
+		if (preCondition()) {
+	         assert savedBooksByFileId != null : "savedBooksByFileId not null";
+	         assert fileInfos != null : "fileInfos not null";
+		}
+		
 		final ZLFile helpFile = BookUtil.getHelpFile();
 		Book helpBook = savedBooksByFileId.get(fileInfos.getId(helpFile));
 		if (helpBook == null) {
@@ -526,9 +558,32 @@ public class BookCollection extends AbstractBookCollection {
 		saveBook(helpBook, false);
 		// saved
 		addBook(helpBook, false);
+	}
+	
+	private void build() {
+		// Step 0: get database books marked as "existing"		
+		/* query */ final FileInfoSet fileInfos = new FileInfoSet(myDatabase);
+		
+		/* query */ final Map<Long,Book> savedBooksByFileId = myDatabase.loadBooks(fileInfos, true);
+		
+		/* command */ setSavedBooksByFieldId(savedBooksByFileId);
+
+		// Step 1: check if files corresponding to "existing" books really exists;
+		//         add books to library if yes (and reload book info if needed);
+		//         remove from recent/favorites list if no;
+		//         collect newly "orphaned" books				
+		/* query */ final Set<ZLPhysicalFile> physicalFiles = getPhysicalFiles(savedBooksByFileId);
+		/* command */ setOphanedBooks(savedBooksByFileId, fileInfos);
+
+		// Step 2: collect books from physical files; add new, update already added,
+		//         unmark orphaned as existing again, collect newly added			
+		/* mixed query and command */ final Set<Book> newBooks = getNewBooks(savedBooksByFileId, fileInfos, physicalFiles);
+
+		// Step 3: add help file
+		/* command */ addHelpFiles(savedBooksByFileId, fileInfos);
 
 		// Step 4: save changes into database
-		fileInfos.save();
+		/* command */ fileInfos.save();
 
 		myDatabase.executeAsTransaction(new Runnable() {
 			public void run() {
@@ -537,7 +592,8 @@ public class BookCollection extends AbstractBookCollection {
 				}
 			}
 		});
-		myDatabase.setExistingFlag(newBooks, true);
+
+		/* command */ myDatabase.setExistingFlag(newBooks, true);
 	}
 
 	private List<ZLPhysicalFile> collectPhysicalFiles(List<String> paths) {
