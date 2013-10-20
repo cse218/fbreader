@@ -67,26 +67,25 @@ public class TipsManager {
 	}
 
 	private List<Tip> myTips;
-	private List<Tip> getTips() {
-		if (myTips == null) {
-			final ZLFile file = ZLFile.createFileByPath(getLocalFilePath());
-			if (file.exists()) {
-				final TipsFeedHandler handler = new TipsFeedHandler();
-				new ATOMXMLReader(handler, false).readQuietly(file);
-				final List<Tip> tips = Collections.unmodifiableList(handler.Tips);
-				if (tips.size() > 0) {
-					myTips = tips;
-				}
+	
+	// post-condition: myTips != null
+	public void setTips(){
+		final ZLFile file = ZLFile.createFileByPath(getLocalFilePath());
+		if (file.exists()) {
+			final TipsFeedHandler handler = new TipsFeedHandler();
+			new ATOMXMLReader(handler, false).readQuietly(file);
+			final List<Tip> tips = Collections.unmodifiableList(handler.Tips);
+			if (tips.size() > 0) {
+				myTips = tips;
 			}
 		}
-		return myTips;
 	}
 
 	public boolean hasNextTip() {
-		final List<Tip> tips = getTips();
-		if (tips == null) {
-			return false;
+		if (myTips == null) {
+			setTips();
 		}
+		final List<Tip> tips = myTips;
 
 		final int index = myIndexOption.getValue();
 		if (index >= tips.size()) {
@@ -99,10 +98,10 @@ public class TipsManager {
 	}
 
 	public Tip getNextTip() {
-		final List<Tip> tips = getTips();
-		if (tips == null) {
-			return null;
+		if (myTips == null) {
+			setTips();
 		}
+		final List<Tip> tips = myTips;
 
 		final int index = myIndexOption.getValue();
 		if (index >= tips.size()) {
