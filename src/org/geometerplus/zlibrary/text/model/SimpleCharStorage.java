@@ -21,11 +21,11 @@ package org.geometerplus.zlibrary.text.model;
 
 import java.util.*;
 
-final class SimpleCharStorage implements CharStorage {
+public final class SimpleCharStorage implements CharStorage {
 	private final int myBlockSize;
 	private final ArrayList<char[]> myArray = new ArrayList<char[]>(1024);
 
-	SimpleCharStorage(int blockSize) {
+	public SimpleCharStorage(int blockSize) {
 		myBlockSize = blockSize;
 	}
 

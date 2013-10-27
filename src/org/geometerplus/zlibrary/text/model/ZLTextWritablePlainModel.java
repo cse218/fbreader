@@ -34,7 +34,7 @@ public final class ZLTextWritablePlainModel extends ZLTextPlainModel implements 
 			new int[arraySize], new int[arraySize],
 			new int[arraySize], new int[arraySize],
 			new byte[arraySize],
-			new CachedCharStorage(dataBlockSize, directoryName, extension),
+			SimpleCharStorageFactory.createStorage(directoryName, extension, dataBlockSize, "cached"),
 			imageMap
 		);
 	}

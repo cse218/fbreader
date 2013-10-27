@@ -30,8 +30,20 @@ public class NativeBookModel extends BookModelImpl {
 		super(book);
 	}
 
-	public void initInternalHyperlinks(String directoryName, String fileExtension, int blocksNumber) {
-		myInternalHyperlinks = new CachedCharStorageRO(directoryName, fileExtension, blocksNumber);
+	public void initInternalHyperlinks(
+			String directoryName, 
+			String fileExtension, 
+			int blocksNumber){
+		myInternalHyperlinks = SimpleCharStorageFactory.createStorage(directoryName, fileExtension, blocksNumber);
+	}
+	
+	public void initInternalHyperlinks(
+			String directoryName, 
+			String fileExtension, 
+			int blocksNumber, 
+			String storageStrategy) {
+		myInternalHyperlinks = SimpleCharStorageFactory.createStorage(
+				directoryName, fileExtension, blocksNumber, storageStrategy);
 	}
 
 	private TOCTree myCurrentTree = TOCTree;
@@ -59,7 +71,7 @@ public class NativeBookModel extends BookModelImpl {
 			id, language, paragraphsNumber,
 			entryIndices, entryOffsets,
 			paragraphLenghts, textSizes, paragraphKinds,
-			directoryName, fileExtension, blocksNumber, myImageMap
+			directoryName, fileExtension, blocksNumber, myImageMap, "cachedRO"
 		);
 	}
 

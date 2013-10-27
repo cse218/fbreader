@@ -25,17 +25,35 @@ import org.geometerplus.zlibrary.core.image.ZLImage;
 
 public class ZLTextNativeModel extends ZLTextPlainModel {
 	public ZLTextNativeModel(
+			String id, String language, int paragraphsNumber,
+			int[] entryIndices, int[] entryOffsets,
+			int[] paragraphLengths, int[] textSizes,
+			byte[] paragraphKinds,
+			String directoryName, String fileExtension, int blocksNumber,
+			Map<String,ZLImage> imageMap
+		) {
+			super(
+				id, language,
+				entryIndices, entryOffsets, paragraphLengths, textSizes, paragraphKinds,
+				SimpleCharStorageFactory.createStorage(directoryName, fileExtension, blocksNumber),
+				imageMap
+			);
+			myParagraphsNumber = paragraphsNumber;
+		}
+	
+	public ZLTextNativeModel(
 		String id, String language, int paragraphsNumber,
 		int[] entryIndices, int[] entryOffsets,
 		int[] paragraphLengths, int[] textSizes,
 		byte[] paragraphKinds,
 		String directoryName, String fileExtension, int blocksNumber,
-		Map<String,ZLImage> imageMap
+		Map<String,ZLImage> imageMap,
+		String storageStrategy
 	) {
 		super(
 			id, language,
 			entryIndices, entryOffsets, paragraphLengths, textSizes, paragraphKinds,
-			new CachedCharStorageRO(directoryName, fileExtension, blocksNumber),
+			SimpleCharStorageFactory.createStorage(directoryName, fileExtension, blocksNumber, storageStrategy),
 			imageMap
 		);
 		myParagraphsNumber = paragraphsNumber;
