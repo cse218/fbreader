@@ -2,9 +2,15 @@ package org.geometerplus.fbreader.book;
 
 import java.util.LinkedList;
 
+import org.geometerplus.android.fbreader.covers.Requires;
 import org.xml.sax.Attributes;
 
 public class FilterFactory {
+	@Ensures({
+		if(filter == null){
+			filter = new Filter.Empty();
+		}			
+	})
 	public Filter createFilter(String type, Attributes attributes){
 		Filter filter = null;
 		
@@ -35,12 +41,7 @@ public class FilterFactory {
 			filter = new Filter.ByTitlePrefix(attributes.getValue("prefix"));
 		} else if(type == "has-bookmark"){
 			filter = new Filter.HasBookmark();
-		} else {
-			// we create empty filter for all other types
-			// to keep a door to add new filters in a future
-			filter = new Filter.Empty();
-		}
-		
+		} 	
 		return filter;
 	}
 }
