@@ -20,8 +20,10 @@
 package org.geometerplus.fbreader.book;
 
 public class UID {
-	public final String Type;
-	public final String Id;
+	//public final String Type;
+	private final String Type;
+	//public final String Id;
+	private final String Id;
 
 	public UID(String type, String id) {
 		Type = type;
@@ -43,5 +45,13 @@ public class UID {
 	@Override
 	public int hashCode() {
 		return Type.hashCode() + Id.hashCode();
+	}
+	
+	public String getType(){
+		return Type;
+	}
+	
+	public String getId(){
+		return Id;
 	}
 }

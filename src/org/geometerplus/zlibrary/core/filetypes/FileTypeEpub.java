@@ -27,15 +27,12 @@ import org.geometerplus.zlibrary.core.util.MimeType;
 class FileTypeEpub extends FileType {
 	FileTypeEpub() {
 		super("ePub");
+		fileTypeChecker = new FileTypeEpubAcceptFile();
 	}
 
 	@Override
 	public boolean acceptsFile(ZLFile file) {
-		final String extension = file.getExtension();
-		return
-			"epub".equalsIgnoreCase(extension) ||
-			"oebzip".equalsIgnoreCase(extension) ||
-			"opf".equalsIgnoreCase(extension);
+		return fileTypeChecker.acceptsFile(file);
 	}
 
 	@Override

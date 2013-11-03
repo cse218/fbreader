@@ -25,14 +25,15 @@ import org.geometerplus.zlibrary.core.filesystem.ZLFile;
 import org.geometerplus.zlibrary.core.util.MimeType;
 
 class FileTypeDjVu extends FileType {
+		
 	FileTypeDjVu() {
 		super("DjVu");
+		fileTypeChecker = new FIleTypeDjVuAcceptFile();
 	}
 
 	@Override
 	public boolean acceptsFile(ZLFile file) {
-		final String extension = file.getExtension();
-		return "djvu".equalsIgnoreCase(extension) || "djv".equalsIgnoreCase(extension);
+		return fileTypeChecker.acceptsFile(file);
 	}
 
 	@Override

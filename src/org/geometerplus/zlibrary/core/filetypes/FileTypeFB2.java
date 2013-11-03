@@ -28,12 +28,12 @@ import org.geometerplus.zlibrary.core.util.MimeType;
 class FileTypeFB2 extends FileType {
 	FileTypeFB2() {
 		super("fb2");
+		fileTypeChecker = new FileTypeFB2AcceptFile();
 	}
 
 	@Override
 	public boolean acceptsFile(ZLFile file) {
-		final String lName = file.getShortName().toLowerCase();
-		return lName.endsWith(".fb2") || lName.endsWith(".fb2.zip");
+		return fileTypeChecker.acceptsFile(file);
 	}
 
 	private final List<MimeType> myMimeTypes = new ArrayList<MimeType>();

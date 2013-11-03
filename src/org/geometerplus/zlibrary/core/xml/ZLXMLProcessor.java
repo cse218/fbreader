@@ -25,6 +25,7 @@ import java.io.*;
 import org.geometerplus.zlibrary.core.filesystem.ZLFile;
 
 public abstract class ZLXMLProcessor {
+	
 	public static Map<String,char[]> getEntityMap(List<String> dtdList) {
 		try {
 			return ZLXMLParser.getDTDMap(dtdList);

@@ -25,6 +25,8 @@ import org.geometerplus.zlibrary.core.filesystem.ZLFile;
 import org.geometerplus.zlibrary.core.util.MimeType;
 
 public class FileTypeCollection {
+	
+	
 	public static final FileTypeCollection Instance = new FileTypeCollection();
 
 	private final TreeMap<String,FileType> myTypes = new TreeMap<String,FileType>();

@@ -20,7 +20,6 @@
 package org.geometerplus.fbreader.formats.fb2;
 
 import java.io.IOException;
-
 import org.geometerplus.zlibrary.core.filesystem.ZLFile;
 import org.geometerplus.zlibrary.core.xml.*;
 
@@ -64,7 +63,6 @@ public class FB2AnnotationReader extends ZLXMLReaderAdapter {
 				break;
 			default:
 				if (myReadState == READ_ANNOTATION) {
-					// TODO: add tag to buffer
 					myBuffer.append(" ");
 				}
 				break;
@@ -84,7 +82,6 @@ public class FB2AnnotationReader extends ZLXMLReaderAdapter {
 				myBuffer.append("\n");
 				break;
 			default:
-				// TODO: add tag to buffer
 				myBuffer.append(" ");
 				break;
 		}

@@ -212,7 +212,8 @@ public class BookCollectionShadow extends AbstractBookCollection implements Serv
 			return null;
 		}
 		try {
-			return SerializerUtil.deserializeBook(myInterface.getBookByUid(uid.Type, uid.Id));
+			//return SerializerUtil.deserializeBook(myInterface.getBookByUid(uid.Type, uid.Id));
+			return SerializerUtil.deserializeBook(myInterface.getBookByUid(uid.getType(), uid.getId()));
 		} catch (RemoteException e) {
 			return null;
 		}

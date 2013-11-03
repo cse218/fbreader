@@ -27,6 +27,8 @@ import org.geometerplus.zlibrary.core.util.MimeType;
 public abstract class FileType {
 	public final String Id;
 
+	FileTypeChecker fileTypeChecker;
+	
 	protected FileType(String id) {
 		Id = id;
 	}

@@ -24,6 +24,9 @@ import android.os.Environment;
 import org.geometerplus.zlibrary.core.options.ZLStringOption;
 
 public abstract class Paths {
+	
+	private final static String SMART_SHARE_DIR = "/system/usr/share/FBReader";
+	
 	public static String cardDirectory() {
 		return Environment.getExternalStorageDirectory().getPath();
 	}
@@ -53,6 +56,7 @@ public abstract class Paths {
 	}
 
 	public static String systemShareDirectory() {
-		return "/system/usr/share/FBReader";
+		//return "/system/usr/share/FBReader";
+		return SMART_SHARE_DIR;
 	}
 }

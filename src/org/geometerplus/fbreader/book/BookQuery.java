@@ -28,6 +28,7 @@ public final class BookQuery {
 		this(filter, limit, 0);
 	}
 
+	
 	BookQuery(Filter filter, int limit, int page) {
 		Filter = filter;
 		Limit = limit;

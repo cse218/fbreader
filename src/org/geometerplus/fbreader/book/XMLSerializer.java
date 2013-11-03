@@ -176,9 +176,9 @@ class XMLSerializer extends AbstractSerializer {
 		for (UID uid : book.uids()) {
 			appendTag(
 				buffer, "dc:identifier", false,
-				"scheme", uid.Type
+				"scheme", uid.getType()
 			);
-			buffer.append(uid.Id);
+			buffer.append(uid.getId());
 			closeTag(buffer, "dc:identifier");
 		}
 

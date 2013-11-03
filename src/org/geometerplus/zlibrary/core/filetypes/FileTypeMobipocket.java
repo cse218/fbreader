@@ -27,17 +27,12 @@ import org.geometerplus.zlibrary.core.util.MimeType;
 class FileTypeMobipocket extends FileTypePalm {
 	FileTypeMobipocket() {
 		super("Mobipocket", "BOOKMOBI");
+		fileTypeChecker = new FileTypeMobipocketAcceptFile();
 	}
 
 	@Override
 	public boolean acceptsFile(ZLFile file) {
-		if (super.acceptsFile(file)) {
-			return true;
-		}
-		final String extension = file.getExtension();
-		return
-			("mobi".equalsIgnoreCase(extension) || "azw3".equalsIgnoreCase(extension)) && 
-			"BOOKMOBI".equals(palmFileType(file));
+		return fileTypeChecker.acceptsFile(file);
 	}
 
 	@Override
