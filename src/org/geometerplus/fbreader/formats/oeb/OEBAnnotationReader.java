@@ -37,7 +37,7 @@ class OEBAnnotationReader extends ZLXMLReaderAdapter implements XMLNamespaces {
 		myBuffer.delete(0, myBuffer.length());
 
 		try {
-			ZLXMLProcessor.read(this, file, 512);
+			ZLXMLProcessor.getInstance().read(this, file, 512);
 			final int len = myBuffer.length();
 			if (len > 1) {
 				if (myBuffer.charAt(len - 1) == '\n') {

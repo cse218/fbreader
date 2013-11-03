@@ -100,7 +100,7 @@ public class FB2AnnotationReader extends ZLXMLReaderAdapter {
 
 	private boolean readDocument(ZLFile file) {
 		try {
-			ZLXMLProcessor.read(this, file, 512);
+			ZLXMLProcessor.getInstance().read(this, file, 512);
 			return true;
 		} catch (IOException e) {
 			return false;

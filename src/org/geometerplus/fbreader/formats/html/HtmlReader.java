@@ -107,7 +107,7 @@ public class HtmlReader extends BookReader implements ZLHtmlReader {
 	private HashMap<String,char[]> myEntityMap;
 	public void entityDataHandler(String entity) {
 		if (myEntityMap == null) {
-			myEntityMap = new HashMap<String,char[]>(ZLXMLProcessor.getEntityMap(XHTMLReader.xhtmlDTDs()));
+			myEntityMap = new HashMap<String,char[]>(ZLXMLProcessor.getInstance().getEntityMap(XHTMLReader.xhtmlDTDs()));
 		}
 		char[] data = myEntityMap.get(entity);
 		if (data == null) {

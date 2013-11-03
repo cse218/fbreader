@@ -46,19 +46,19 @@ public abstract class ZLXMLReaderAdapter implements ZLXMLReader {
 	}
 
  	public void read(ZLFile file) throws IOException {
-		ZLXMLProcessor.read(this, file);
+		ZLXMLProcessor.getInstance().read(this, file, 65536);
 	}
 
 	public void read(InputStream stream) throws IOException {
-		ZLXMLProcessor.read(this, stream, 65536);
+		ZLXMLProcessor.getInstance().read(this, stream, 65536);
 	}
 
 	public void read(String string) throws IOException {
-		ZLXMLProcessor.read(this, new StringReader(string), 65536);
+		ZLXMLProcessor.getInstance().read(this, new StringReader(string), 65536);
 	}
 
 	public void read(Reader reader) throws IOException {
-		ZLXMLProcessor.read(this, reader, 65536);
+		ZLXMLProcessor.getInstance().read(this, reader, 65536);
 	}
 
 	public boolean dontCacheAttributeValues() {

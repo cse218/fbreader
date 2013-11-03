@@ -64,7 +64,7 @@ public final class FB2Reader extends ZLXMLReaderAdapter {
 		Base64EncodedImage.resetCounter();
 		final ZLFile file = myBookReader.Model.Book.File;
 		try {
-			ZLXMLProcessor.read(this, file);
+			ZLXMLProcessor.getInstance().read(this, file);
 		} catch (IOException e) {
 			throw new BookReadingException(e, file);
 		}

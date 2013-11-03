@@ -50,7 +50,7 @@ class OEBMetaInfoReader extends ZLXMLReaderAdapter implements XMLNamespaces {
 		mySeriesIndex = null;
 
 		try {
-			ZLXMLProcessor.read(this, file, 512);
+			ZLXMLProcessor.getInstance().read(this, file, 512);
 		} catch (IOException e) {
 			throw new BookReadingException(e, file);
 		}

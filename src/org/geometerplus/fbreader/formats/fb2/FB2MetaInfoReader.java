@@ -63,7 +63,7 @@ public class FB2MetaInfoReader extends ZLXMLReaderAdapter {
 		myAuthorNames[2] = "";
 		myBuffer.delete(0, myBuffer.length());
 		try {
-			ZLXMLProcessor.read(this, myBook.File, 512);
+			ZLXMLProcessor.getInstance().read(this, myBook.File, 512);
 		} catch (IOException e) {
 			throw new BookReadingException(e, myBook.File);
 		}
